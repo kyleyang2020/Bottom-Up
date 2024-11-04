@@ -259,7 +259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 172221566}
   - component: {fileID: 172221565}
-  - component: {fileID: 172221567}
   - component: {fileID: 172221568}
   m_Layer: 0
   m_Name: WallTop
@@ -335,33 +334,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 442261483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &172221567
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172221563}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &172221568
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -507,7 +479,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67dbefb71b230d4f83e5ee7953dd35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  playerInput: {fileID: 0}
+  walkSpeed: 5
+  sprintSpeed: 20
+  isSprinting: 0
 --- !u!114 &235665954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 601050320}
   - component: {fileID: 601050319}
-  - component: {fileID: 601050321}
   - component: {fileID: 601050322}
   m_Layer: 0
   m_Name: WallLeft
@@ -803,33 +777,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 442261483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!50 &601050321
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601050317}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &601050322
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -885,7 +832,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1187361098}
   - component: {fileID: 1187361097}
-  - component: {fileID: 1187361099}
   - component: {fileID: 1187361100}
   m_Layer: 0
   m_Name: WallRight
@@ -961,33 +907,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 442261483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!50 &1187361099
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187361095}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1187361100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1138,7 +1057,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1810768452}
   - component: {fileID: 1810768451}
-  - component: {fileID: 1810768453}
   - component: {fileID: 1810768454}
   m_Layer: 0
   m_Name: WallBottom
@@ -1214,33 +1132,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 442261483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1810768453
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1810768449}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1810768454
 BoxCollider2D:
   m_ObjectHideFlags: 0
