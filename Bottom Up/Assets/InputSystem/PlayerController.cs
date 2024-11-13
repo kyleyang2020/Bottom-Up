@@ -24,7 +24,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     ""name"": ""PlayerController"",
     ""maps"": [
         {
-            ""name"": ""Movement"",
+            ""name"": ""Ground Movement"",
             ""id"": ""2c4cb0c6-a93a-48e4-805d-882888ab1f1c"",
             ""actions"": [
                 {
@@ -55,9 +55,18 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crouch"",
+                    ""name"": ""CrouchStart"",
                     ""type"": ""Button"",
-                    ""id"": ""6a5118fc-eef3-4a8b-85a9-9246dafed08a"",
+                    ""id"": ""ec2e38b5-cc68-4321-8582-58c90e92d8fd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CrouchFinish"",
+                    ""type"": ""Button"",
+                    ""id"": ""b703f22b-5539-4640-8777-86d190566392"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -144,12 +153,23 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9684cc1c-d392-4905-be8e-f3a33f9eb871"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": ""Hold(duration=0.1,pressPoint=0.1)"",
+                    ""id"": ""43ee8ca8-6481-4a08-94e7-4c8a8039779c"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Crouch"",
+                    ""action"": ""CrouchStart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""edccee20-df67-4185-9fc1-6353cbb04d1b"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CrouchFinish"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -158,12 +178,13 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Movement
-        m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_WASD = m_Movement.FindAction("WASD", throwIfNotFound: true);
-        m_Movement_SprintStart = m_Movement.FindAction("SprintStart", throwIfNotFound: true);
-        m_Movement_SprintFinish = m_Movement.FindAction("SprintFinish", throwIfNotFound: true);
-        m_Movement_Crouch = m_Movement.FindAction("Crouch", throwIfNotFound: true);
+        // Ground Movement
+        m_GroundMovement = asset.FindActionMap("Ground Movement", throwIfNotFound: true);
+        m_GroundMovement_WASD = m_GroundMovement.FindAction("WASD", throwIfNotFound: true);
+        m_GroundMovement_SprintStart = m_GroundMovement.FindAction("SprintStart", throwIfNotFound: true);
+        m_GroundMovement_SprintFinish = m_GroundMovement.FindAction("SprintFinish", throwIfNotFound: true);
+        m_GroundMovement_CrouchStart = m_GroundMovement.FindAction("CrouchStart", throwIfNotFound: true);
+        m_GroundMovement_CrouchFinish = m_GroundMovement.FindAction("CrouchFinish", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -222,30 +243,32 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Movement
-    private readonly InputActionMap m_Movement;
-    private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
-    private readonly InputAction m_Movement_WASD;
-    private readonly InputAction m_Movement_SprintStart;
-    private readonly InputAction m_Movement_SprintFinish;
-    private readonly InputAction m_Movement_Crouch;
-    public struct MovementActions
+    // Ground Movement
+    private readonly InputActionMap m_GroundMovement;
+    private List<IGroundMovementActions> m_GroundMovementActionsCallbackInterfaces = new List<IGroundMovementActions>();
+    private readonly InputAction m_GroundMovement_WASD;
+    private readonly InputAction m_GroundMovement_SprintStart;
+    private readonly InputAction m_GroundMovement_SprintFinish;
+    private readonly InputAction m_GroundMovement_CrouchStart;
+    private readonly InputAction m_GroundMovement_CrouchFinish;
+    public struct GroundMovementActions
     {
         private @PlayerController m_Wrapper;
-        public MovementActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @WASD => m_Wrapper.m_Movement_WASD;
-        public InputAction @SprintStart => m_Wrapper.m_Movement_SprintStart;
-        public InputAction @SprintFinish => m_Wrapper.m_Movement_SprintFinish;
-        public InputAction @Crouch => m_Wrapper.m_Movement_Crouch;
-        public InputActionMap Get() { return m_Wrapper.m_Movement; }
+        public GroundMovementActions(@PlayerController wrapper) { m_Wrapper = wrapper; }
+        public InputAction @WASD => m_Wrapper.m_GroundMovement_WASD;
+        public InputAction @SprintStart => m_Wrapper.m_GroundMovement_SprintStart;
+        public InputAction @SprintFinish => m_Wrapper.m_GroundMovement_SprintFinish;
+        public InputAction @CrouchStart => m_Wrapper.m_GroundMovement_CrouchStart;
+        public InputAction @CrouchFinish => m_Wrapper.m_GroundMovement_CrouchFinish;
+        public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MovementActions set) { return set.Get(); }
-        public void AddCallbacks(IMovementActions instance)
+        public static implicit operator InputActionMap(GroundMovementActions set) { return set.Get(); }
+        public void AddCallbacks(IGroundMovementActions instance)
         {
-            if (instance == null || m_Wrapper.m_MovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Add(instance);
             @WASD.started += instance.OnWASD;
             @WASD.performed += instance.OnWASD;
             @WASD.canceled += instance.OnWASD;
@@ -255,12 +278,15 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SprintFinish.started += instance.OnSprintFinish;
             @SprintFinish.performed += instance.OnSprintFinish;
             @SprintFinish.canceled += instance.OnSprintFinish;
-            @Crouch.started += instance.OnCrouch;
-            @Crouch.performed += instance.OnCrouch;
-            @Crouch.canceled += instance.OnCrouch;
+            @CrouchStart.started += instance.OnCrouchStart;
+            @CrouchStart.performed += instance.OnCrouchStart;
+            @CrouchStart.canceled += instance.OnCrouchStart;
+            @CrouchFinish.started += instance.OnCrouchFinish;
+            @CrouchFinish.performed += instance.OnCrouchFinish;
+            @CrouchFinish.canceled += instance.OnCrouchFinish;
         }
 
-        private void UnregisterCallbacks(IMovementActions instance)
+        private void UnregisterCallbacks(IGroundMovementActions instance)
         {
             @WASD.started -= instance.OnWASD;
             @WASD.performed -= instance.OnWASD;
@@ -271,31 +297,35 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @SprintFinish.started -= instance.OnSprintFinish;
             @SprintFinish.performed -= instance.OnSprintFinish;
             @SprintFinish.canceled -= instance.OnSprintFinish;
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
+            @CrouchStart.started -= instance.OnCrouchStart;
+            @CrouchStart.performed -= instance.OnCrouchStart;
+            @CrouchStart.canceled -= instance.OnCrouchStart;
+            @CrouchFinish.started -= instance.OnCrouchFinish;
+            @CrouchFinish.performed -= instance.OnCrouchFinish;
+            @CrouchFinish.canceled -= instance.OnCrouchFinish;
         }
 
-        public void RemoveCallbacks(IMovementActions instance)
+        public void RemoveCallbacks(IGroundMovementActions instance)
         {
-            if (m_Wrapper.m_MovementActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IMovementActions instance)
+        public void SetCallbacks(IGroundMovementActions instance)
         {
-            foreach (var item in m_Wrapper.m_MovementActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_GroundMovementActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_MovementActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_GroundMovementActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public MovementActions @Movement => new MovementActions(this);
-    public interface IMovementActions
+    public GroundMovementActions @GroundMovement => new GroundMovementActions(this);
+    public interface IGroundMovementActions
     {
         void OnWASD(InputAction.CallbackContext context);
         void OnSprintStart(InputAction.CallbackContext context);
         void OnSprintFinish(InputAction.CallbackContext context);
-        void OnCrouch(InputAction.CallbackContext context);
+        void OnCrouchStart(InputAction.CallbackContext context);
+        void OnCrouchFinish(InputAction.CallbackContext context);
     }
 }

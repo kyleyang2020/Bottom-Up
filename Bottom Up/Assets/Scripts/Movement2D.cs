@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /*
  * Concerning the Player Input System, there are 4 ways to do behavior, Send Message, Broadcast Message, etc.
@@ -14,13 +15,20 @@ public class Movmement2D : MonoBehaviour
     [Header("References")]
     private Rigidbody2D rb;
     private SpriteRenderer sr;
-    public PlayerInput playerInput;
+    private PlayerInput playerInput;
     private PlayerController playerController;
 
-    [Header("Player Stats")]
+    [Header("Player Movement")]
+    [SerializeField] private float crouchSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
-    [SerializeField] private float crouchSpeed;
+
+    [Header("Player Stats")]
+    [SerializeField] private float sprintStamina;
+    [SerializeField] private float breathStamina;
+
+    public Slider sprintSlider;
+    public Slider breathSlider;
 
     [Header("Trackers")]
     public bool isCrouching;
@@ -33,15 +41,47 @@ public class Movmement2D : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         playerInput = GetComponent<PlayerInput>();
         playerController = new PlayerController();
+
+        sprintSlider.value = 1;
+        breathSlider.value = 1;
     }
 
     void Update()
     {
-        if (rb.velocity.magnitude == 0)
-        {
-            sr.color = Color.blue;
-        }
+        // when not moving color blue
+        if (rb.velocity.magnitude == 0) {sr.color = Color.blue;}
+
+        if (isSprinting)
+            DecreaseStamina();
+        if (isCrouching)
+            DecreaseBreath();
+        if(!isSprinting)
+            IncreaseStamina();
+        if(!isCrouching)
+            IncreaseBreath();
     }
+
+    #region Sprint/Crouch Bar
+    public void DecreaseStamina()
+    {
+        sprintSlider.value -= (1 / sprintStamina);
+    }
+
+    public void IncreaseStamina()
+    {
+        sprintSlider.value += (1 / sprintStamina);
+    }
+
+    public void DecreaseBreath()
+    {
+        breathSlider.value -= (1 / breathStamina);
+    }
+
+    public void IncreaseBreath()
+    {
+        breathSlider.value += (1 / breathStamina);
+    }
+    #endregion 
 
     // ------------------------------Unity Input System Functions------------------------------ //
 
@@ -54,6 +94,12 @@ public class Movmement2D : MonoBehaviour
             rb.velocity = inputValue.Get<Vector2>() * sprintSpeed;
             sr.color = Color.red;
         }
+        // when crtl is held, change color and spd
+        else if (isCrouching)
+        {
+            rb.velocity = inputValue.Get<Vector2>() * crouchSpeed;
+            sr.color = Color.black;
+        }
         // on WASD, input system will take the Vector2 from pressing WASD and multiple it with move speed and move
         else
         {
@@ -62,6 +108,7 @@ public class Movmement2D : MonoBehaviour
         }
     }
 
+    #region Sprint/Crouch Input Functions
     private void OnSprintStart()
     {
         isSprinting = true;
@@ -72,10 +119,16 @@ public class Movmement2D : MonoBehaviour
         isSprinting = false;
     }
 
-    private void onCrouch()
+    private void OnCrouchStart()
     {
-        Debug.Log("crouch");
+        isCrouching = true;
     }
+
+    private void OnCrouchFinish()
+    {
+        isCrouching = false;
+    }
+    #endregion
 
     // --------------------------------Built-In Unity Functions-------------------------------- //
     private void OnTriggerEnter2D(Collider2D collision)

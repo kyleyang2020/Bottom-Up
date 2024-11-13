@@ -2,7 +2,7 @@
     "name": "PlayerController",
     "maps": [
         {
-            "name": "Movement",
+            "name": "Ground Movement",
             "id": "2c4cb0c6-a93a-48e4-805d-882888ab1f1c",
             "actions": [
                 {
@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
+                    "name": "CrouchStart",
                     "type": "Button",
-                    "id": "6a5118fc-eef3-4a8b-85a9-9246dafed08a",
+                    "id": "ec2e38b5-cc68-4321-8582-58c90e92d8fd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CrouchFinish",
+                    "type": "Button",
+                    "id": "b703f22b-5539-4640-8777-86d190566392",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -122,12 +131,23 @@
                 },
                 {
                     "name": "",
-                    "id": "9684cc1c-d392-4905-be8e-f3a33f9eb871",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "Hold(duration=0.1,pressPoint=0.1)",
+                    "id": "43ee8ca8-6481-4a08-94e7-4c8a8039779c",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "CrouchStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "edccee20-df67-4185-9fc1-6353cbb04d1b",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CrouchFinish",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
