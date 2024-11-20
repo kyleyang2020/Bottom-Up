@@ -16,7 +16,6 @@ public class AttackStateEnemy : BaseStateEnemy
     {
         //Debug.Log("Enter Attack State");
         enemy.StopPosition();
-        enemy.animator.SetBool("isAttacking", true);
 
     }
 
@@ -40,7 +39,6 @@ public class AttackStateEnemy : BaseStateEnemy
         if (!(enemy.RayCastCheck(attackDistance)))
         {
             enemy.SwitchState(enemy.aggroState);
-            enemy.animator.SetBool("isAttacking", false);
         }
     }
 }
