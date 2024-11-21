@@ -58,10 +58,12 @@ public class EnemyStateManager : MonoBehaviour
         render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<Movmement2D>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
 
         // get component and when enemy dies, switch the state
-        kill = GetComponent<Killable>();
-        kill.OnDie.AddListener(Death);
+        //kill = GetComponent<Killable>();
+        //kill.OnDie.AddListener(Death);
 
         // starting state for the state machine, aka idle
         currentState = idleState;
@@ -79,7 +81,7 @@ public class EnemyStateManager : MonoBehaviour
     }
 
     // checks if ray is hitting at a given distance and returns a bool because of it with color
-    public bool RayCastCheck(float distance)
+    public bool RayCastCheckGizmo(float distance)
     {
         if (Physics.Raycast(transform.position, (playerTransform.transform.position - transform.position), out RaycastHit hitInfo, distance))
         {
@@ -95,13 +97,13 @@ public class EnemyStateManager : MonoBehaviour
         }
     }
 
-    /*
+    
     // checks if ray is hitting at a given distance and returns a bool because of it
     public bool RayCastCheck(float distance)
     {
         return (playerTransform.position - transform.position).magnitude < distance;
     }
-    */
+    
 
     #region Enemy Movement 
 

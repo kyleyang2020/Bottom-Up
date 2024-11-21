@@ -28,6 +28,8 @@ public class IdleStateEnemy : BaseStateEnemy
 
         // if enemy is in range for aggro
         if (enemy.RayCastCheck(aggroDistance))
+        {
             enemy.SwitchState(enemy.aggroState);
+        }
     }
 }
