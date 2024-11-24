@@ -11,6 +11,7 @@ public class EnemyStateManager : MonoBehaviour
     public float deaggroDistance;
     public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
+    public float deleteTimer;
     public Transform spawnpoint;
 
     [Header("Enemy Projectile Variables")]
