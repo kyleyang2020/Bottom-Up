@@ -12,6 +12,7 @@ public class EnemyStateManager : MonoBehaviour
     public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
     public float deleteTimer;
+    public float stunDuration;
     public Transform spawnpoint;
 
     [Header("Enemy Projectile Variables")]
@@ -30,10 +31,6 @@ public class EnemyStateManager : MonoBehaviour
     public Timer timer = new Timer();
     private Transform playerTransform;
 
-    [Header("Animations")]
-    public Animator animator;
-    public ParticleSystem particle;
-
 
     // all the states of the enemies
     public BaseStateEnemy currentState;
@@ -49,6 +46,7 @@ public class EnemyStateManager : MonoBehaviour
         idleState = new IdleStateEnemy(aggroDistance);
         aggroState = new AggroStateEnemy(deaggroDistance, attackDistance);
         attackState = new AttackStateEnemy(attackDistance);
+        stunState = new StunStateEnemy(stunDuration);
         deathState = new DeathStateEnemy();
 
         if (spawnpoint == null)
@@ -60,10 +58,12 @@ public class EnemyStateManager : MonoBehaviour
         render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<Movmement2D>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
 
         // get component and when enemy dies, switch the state
-        kill = GetComponent<Killable>();
-        kill.OnDie.AddListener(Death);
+        //kill = GetComponent<Killable>();
+        //kill.OnDie.AddListener(Death);
 
         // starting state for the state machine, aka idle
         currentState = idleState;
@@ -80,9 +80,8 @@ public class EnemyStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
-    /*
-    // checks if ray is hitting at a given distance and returns a bool because of it
-    public bool RayCastCheck(float distance)
+    // checks if ray is hitting at a given distance and returns a bool because of it with color
+    public bool RayCastCheckGizmo(float distance)
     {
         if (Physics.Raycast(transform.position, (playerTransform.transform.position - transform.position), out RaycastHit hitInfo, distance))
         {
@@ -97,24 +96,28 @@ public class EnemyStateManager : MonoBehaviour
             return false;
         }
     }
-    */
 
+    
+    // checks if ray is hitting at a given distance and returns a bool because of it
     public bool RayCastCheck(float distance)
     {
         return (playerTransform.position - transform.position).magnitude < distance;
     }
+    
 
     #region Enemy Movement 
 
     // move towards the player
     public void MoveTowardsPlayer()
     {
+        Debug.Log("moving towards player");
         agent.SetDestination(playerTransform.position);
     }
 
     // move to the original position of enemy
     public void MoveOriginalPosition()
     {
+        Debug.Log("moving to original position");
         agent.SetDestination(spawnpoint.position);
     }
 
@@ -182,7 +185,8 @@ public class EnemyStateManager : MonoBehaviour
     public void ShootBullet()
     {
         if (!timer.IsActive())
-            timer.StartTimer(enemyAttackCooldown, MakeBullet);
+            Debug.Log("attack");
+            //timer.StartTimer(enemyAttackCooldown, MakeBullet);
     }
 
     private void OnDrawGizmos()

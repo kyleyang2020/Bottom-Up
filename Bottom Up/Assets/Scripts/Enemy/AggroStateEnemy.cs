@@ -35,8 +35,6 @@ public class AggroStateEnemy : BaseStateEnemy
             // currently idle only goes back to original position
             //enemy.SwitchToIdle(); this is not the intended behavior, you should start this timer when it reaches the LAST SEEN position of the player when theyre out of site - Nelson
             enemy.Idle(); // This is here for march implementation
-
-            enemy.animator.SetBool("isWalking", false);
         }
         // if enemy is in range for attack
         if (enemy.RayCastCheck(attackDistance))

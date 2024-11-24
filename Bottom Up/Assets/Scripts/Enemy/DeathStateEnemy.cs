@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class DeathStateEnemy : BaseStateEnemy
 {
-
-    public Animator animator;
     public float disapearTimer;
-
 
     public override void EnterState(EnemyStateManager enemy)
     {
-        enemy.animator.speed = 1;
-        enemy.animator.SetBool("isDead", true);
         disapearTimer = enemy.deleteTimer;
 
         // drop a number of hp/blood to player

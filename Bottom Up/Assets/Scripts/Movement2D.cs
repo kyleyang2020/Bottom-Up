@@ -33,6 +33,7 @@ public class Movmement2D : MonoBehaviour
     [Header("Trackers")]
     public bool isCrouching;
     public bool isSprinting;
+    public 
 
 
     void Start()

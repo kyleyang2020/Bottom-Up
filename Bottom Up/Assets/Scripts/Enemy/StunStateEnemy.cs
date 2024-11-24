@@ -19,8 +19,6 @@ public class StunStateEnemy : BaseStateEnemy
     {
         stunTimer = 0;
         //Debug.Log("Enter Stun State");
-        enemy.particle.Play();
-        enemy.animator.speed = 0;
         enemy.render.material.color = Color.red;
     }
 
@@ -29,7 +27,6 @@ public class StunStateEnemy : BaseStateEnemy
         stunTimer += Time.deltaTime;
         if (stunTimer >= stunDuration)
         {
-            enemy.animator.speed = 1;
             enemy.Idle();
         }
         //Debug.Log("Enter Stun Update");
