@@ -1,23 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void EnterGame()
     {
-        Debug.Log("button click");
+        Debug.Log("enter");
+    }
+    public void Settings()
+    {
+        Debug.Log("settings");
+    }
+    public void Tutorial()
+    {
+        Debug.Log("tutorial");
+    }
+    public void Credits()
+    {
+        Debug.Log("credits");
+    }
+    public void ExitGame()
+    {
+        Debug.Log("exit");
+        Application.Quit();
     }
 }
