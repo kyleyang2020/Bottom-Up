@@ -1966,7 +1966,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 972936192}
-  - component: {fileID: 972936193}
+  - component: {fileID: 972936194}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -1990,7 +1990,7 @@ Transform:
   - {fileID: 1834501102}
   m_Father: {fileID: 235665952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &972936193
+--- !u!114 &972936194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1999,9 +1999,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 972936191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754dc54177900c445b7d669c9b9d1b4d, type: 3}
+  m_Script: {fileID: 11500000, guid: c66e456015b3a4b449516944da826f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeed: 5
 --- !u!1 &1010407149
 GameObject:
   m_ObjectHideFlags: 0
