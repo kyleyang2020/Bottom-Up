@@ -12,24 +12,18 @@ public class EnemyStateManager : MonoBehaviour
     public float attackDistance;
     public float idleAtPlayerLastPositionDuration;
     public float deleteTimer;
-    public float stunDuration;
     public Transform spawnpoint;
 
     [Header("Enemy Projectile Variables")]
-    public GameObject bulletPrefab;
-    public GameObject bulletFirePoint;
-    public float bulletSpeed;
-    public float bulletDamage;
-    public float enemyAttackCooldown;
     public float turnSpeed; // speed of the enemy turn to attack player
     public PlayerInRange attackRange;
 
     [Header("References")]
-    private Killable kill;
     [HideInInspector] public Renderer render;
     private NavMeshAgent agent;
     public Timer timer = new Timer();
     private Transform playerTransform;
+    private Rigidbody2D rb;
 
 
     // all the states of the enemies
@@ -37,7 +31,7 @@ public class EnemyStateManager : MonoBehaviour
     public IdleStateEnemy idleState;
     public AggroStateEnemy aggroState;
     public AttackStateEnemy attackState;
-    public StunStateEnemy stunState;
+    public DamagedStateEnemy damagedState;
     public DeathStateEnemy deathState;
 
 
@@ -46,8 +40,10 @@ public class EnemyStateManager : MonoBehaviour
         idleState = new IdleStateEnemy(aggroDistance);
         aggroState = new AggroStateEnemy(deaggroDistance, attackDistance);
         attackState = new AttackStateEnemy(attackDistance);
-        stunState = new StunStateEnemy(stunDuration);
+        damagedState = new DamagedStateEnemy(rb, 0.5f, Vector2.zero);
         deathState = new DeathStateEnemy();
+
+        rb = GetComponent<Rigidbody2D>();
 
         if (spawnpoint == null)
         {
@@ -60,10 +56,6 @@ public class EnemyStateManager : MonoBehaviour
         agent = gameObject.GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-
-        // get component and when enemy dies, switch the state
-        //kill = GetComponent<Killable>();
-        //kill.OnDie.AddListener(Death);
 
         // starting state for the state machine, aka idle
         currentState = idleState;
@@ -152,13 +144,6 @@ public class EnemyStateManager : MonoBehaviour
             timer.StartTimer(idleAtPlayerLastPositionDuration, Idle);
     }
 
-    // switches state to stun, change material color to better indicate stun
-    // set stun boolean to true
-    public void Stun()
-    {
-        SwitchState(stunState);
-    }
-
     // switch state to deathstate
     public void Death()
     {
@@ -171,22 +156,11 @@ public class EnemyStateManager : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // shoots a bullet at player position
-    public void MakeBullet()
+    public void ApplyKnockback(Vector2 direction, float force, float duration)
     {
-        Vector3 toPlayer = playerTransform.position - transform.position;
-        GameObject currentBullet = Instantiate(bulletPrefab, bulletFirePoint.transform.position, Quaternion.identity);
-        // update bullet script with parameters here in manager
-        currentBullet.GetComponent<Bullet>().moveForce = toPlayer * bulletSpeed;
-        currentBullet.GetComponent<Bullet>().damage = bulletDamage;
-    }
-
-    // shoots a bullet at player position
-    public void ShootBullet()
-    {
-        if (!timer.IsActive())
-            Debug.Log("attack");
-            //timer.StartTimer(enemyAttackCooldown, MakeBullet);
+        SwitchState(damagedState);
+        Vector2 knockbackForce = direction.normalized * force;
+        damagedState = new DamagedStateEnemy(rb, duration, knockbackForce); // Reinitialize with new parameters
     }
 
     private void OnDrawGizmos()

@@ -21,19 +21,11 @@ public class AttackStateEnemy : BaseStateEnemy
 
     public override void UpdateState(EnemyStateManager enemy)
     {
-        // NOT DONE
-        // "plants their feet and only rotates from their position to aim and shoot projectiles at the player character"
-        // stop moving then rotates to face player and shoot projectile at them
-        // projectile travels straight and does some damage
-        //Debug.Log("enemy stopped, shoot now");
-
+        //Debug.Log("Enter Attack Update");
         if (enemy.DetectPlayer())
-            enemy.ShootBullet();
+            Debug.Log("hit player");
         else
             enemy.LookAtPlayer();
-
-
-        //Debug.Log("Enter Attack Update");
 
         // if enemy is out of range for attack
         if (!(enemy.RayCastCheck(attackDistance)))

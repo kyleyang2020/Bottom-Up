@@ -26,4 +26,12 @@ public class RotateWithMouse2D : MonoBehaviour
         // Smoothly interpolate to the target rotation
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "ENEMY")
+        {
+            Debug.Log("enemy hit");
+        }
+    }
 }

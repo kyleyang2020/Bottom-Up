@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 public class Timer
 {
-    bool isActive = false;
-    float currentTime;
+    [Header ("Trackers")]
+    private bool isActive = false;
+    private float currentTime;
     public UnityEvent OnTimerFinish = new UnityEvent();
+
     public void StartTimer(float amount, UnityAction call = null)
     {
         currentTime = amount;
