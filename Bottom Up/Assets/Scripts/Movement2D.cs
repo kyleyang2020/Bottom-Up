@@ -17,6 +17,7 @@ public class Movmement2D : MonoBehaviour
     private SpriteRenderer sr;
     private PlayerInput playerInput;
     private PlayerController playerController;
+    private Animator animator;
 
     [Header("Player Movement")]
     [SerializeField] private float crouchSpeed;
@@ -27,12 +28,16 @@ public class Movmement2D : MonoBehaviour
     [SerializeField] private float sprintStamina;
     [SerializeField] private float breathStamina;
 
+    [Header("Temp")]
+    [SerializeField] private Sprite idleSprite;
+
     public Slider sprintSlider;
     public Slider breathSlider;
 
     [Header("Trackers")]
     public bool isCrouching;
     public bool isSprinting;
+    public 
 
 
     void Start()
@@ -49,7 +54,10 @@ public class Movmement2D : MonoBehaviour
     void Update()
     {
         // when not moving color blue
-        if (rb.velocity.magnitude == 0) {sr.color = Color.blue;}
+        if (rb.velocity.magnitude == 0) 
+        {
+            sr.sprite = idleSprite;
+        }
 
         if (isSprinting)
             DecreaseStamina();
