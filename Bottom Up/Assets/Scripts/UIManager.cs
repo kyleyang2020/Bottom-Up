@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public GameObject SettingCanvas;
     public GameObject TutorialCanvas;
     public GameObject CreditsCanvas;
+    public GameObject GameOverCanvas;
 
     private GameObject currentCanvas;
     private GameObject previousCanvas;
@@ -29,8 +30,6 @@ public class UIManager : MonoBehaviour
         currentCanvas.SetActive(false);
         previousCanvas.SetActive(true);
     }
-
-
 
     public void EnterGame()
     {
@@ -68,5 +67,15 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("exit");
         Application.Quit();
+    }
+
+    public void GameOver()
+    {
+        ChangeScene("Start");
+        StartCanvas.SetActive(false);
+        GameOverCanvas.SetActive(true);
+
+        currentCanvas = GameOverCanvas;
+        previousCanvas = StartCanvas;
     }
 }
