@@ -78,4 +78,15 @@ public class UIManager : MonoBehaviour
         currentCanvas = GameOverCanvas;
         previousCanvas = StartCanvas;
     }
+
+    public void AccessabilityMenuN2O()
+    {
+        Debug.Log("New to Old");
+        ChangeScene("Start");
+    }
+    public void AccessabilityMenuO2N()
+    {
+        Debug.Log("Old to New");
+        ChangeScene("Start 1");
+    }
 }
