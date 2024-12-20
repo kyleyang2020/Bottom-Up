@@ -71,6 +71,24 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GrowPole"",
+                    ""type"": ""Button"",
+                    ""id"": ""4224edbe-c962-416c-a2a1-a14762af579d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShrinkPole"",
+                    ""type"": ""Button"",
+                    ""id"": ""d1220caf-a2b0-47b7-aa0e-569a2b334740"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +190,28 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
                     ""action"": ""CrouchFinish"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29fbe7e3-7da4-4765-a1ad-53f05817234c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GrowPole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96ab672d-e1f3-4354-9e4c-98deb631afe4"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShrinkPole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +225,8 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         m_GroundMovement_SprintFinish = m_GroundMovement.FindAction("SprintFinish", throwIfNotFound: true);
         m_GroundMovement_CrouchStart = m_GroundMovement.FindAction("CrouchStart", throwIfNotFound: true);
         m_GroundMovement_CrouchFinish = m_GroundMovement.FindAction("CrouchFinish", throwIfNotFound: true);
+        m_GroundMovement_GrowPole = m_GroundMovement.FindAction("GrowPole", throwIfNotFound: true);
+        m_GroundMovement_ShrinkPole = m_GroundMovement.FindAction("ShrinkPole", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +293,8 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_SprintFinish;
     private readonly InputAction m_GroundMovement_CrouchStart;
     private readonly InputAction m_GroundMovement_CrouchFinish;
+    private readonly InputAction m_GroundMovement_GrowPole;
+    private readonly InputAction m_GroundMovement_ShrinkPole;
     public struct GroundMovementActions
     {
         private @PlayerController m_Wrapper;
@@ -260,6 +304,8 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         public InputAction @SprintFinish => m_Wrapper.m_GroundMovement_SprintFinish;
         public InputAction @CrouchStart => m_Wrapper.m_GroundMovement_CrouchStart;
         public InputAction @CrouchFinish => m_Wrapper.m_GroundMovement_CrouchFinish;
+        public InputAction @GrowPole => m_Wrapper.m_GroundMovement_GrowPole;
+        public InputAction @ShrinkPole => m_Wrapper.m_GroundMovement_ShrinkPole;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,6 +330,12 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @CrouchFinish.started += instance.OnCrouchFinish;
             @CrouchFinish.performed += instance.OnCrouchFinish;
             @CrouchFinish.canceled += instance.OnCrouchFinish;
+            @GrowPole.started += instance.OnGrowPole;
+            @GrowPole.performed += instance.OnGrowPole;
+            @GrowPole.canceled += instance.OnGrowPole;
+            @ShrinkPole.started += instance.OnShrinkPole;
+            @ShrinkPole.performed += instance.OnShrinkPole;
+            @ShrinkPole.canceled += instance.OnShrinkPole;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -303,6 +355,12 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
             @CrouchFinish.started -= instance.OnCrouchFinish;
             @CrouchFinish.performed -= instance.OnCrouchFinish;
             @CrouchFinish.canceled -= instance.OnCrouchFinish;
+            @GrowPole.started -= instance.OnGrowPole;
+            @GrowPole.performed -= instance.OnGrowPole;
+            @GrowPole.canceled -= instance.OnGrowPole;
+            @ShrinkPole.started -= instance.OnShrinkPole;
+            @ShrinkPole.performed -= instance.OnShrinkPole;
+            @ShrinkPole.canceled -= instance.OnShrinkPole;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -327,5 +385,7 @@ public partial class @PlayerController: IInputActionCollection2, IDisposable
         void OnSprintFinish(InputAction.CallbackContext context);
         void OnCrouchStart(InputAction.CallbackContext context);
         void OnCrouchFinish(InputAction.CallbackContext context);
+        void OnGrowPole(InputAction.CallbackContext context);
+        void OnShrinkPole(InputAction.CallbackContext context);
     }
 }

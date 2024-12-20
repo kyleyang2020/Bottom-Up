@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class EnemyStateManager : MonoBehaviour
 {
+    public UIManager ui;
     [Header("Enemy State Duration Variables")]
     public float aggroDistance;
     public float deaggroDistance;
@@ -13,6 +14,11 @@ public class EnemyStateManager : MonoBehaviour
     public float idleAtPlayerLastPositionDuration;
     public float deleteTimer;
     public Transform spawnpoint;
+
+    [Header("Enemy Detection")]
+    public Color aggroColor = Color.red;
+    public Color deaggroColor = Color.blue;
+    public Color attackColor = Color.black;
 
     [Header("Enemy Projectile Variables")]
     public float turnSpeed; // speed of the enemy turn to attack player
@@ -24,6 +30,7 @@ public class EnemyStateManager : MonoBehaviour
     public Timer timer = new Timer();
     private Transform playerTransform;
     private Rigidbody2D rb;
+    private ConeDetection2D coneDetection;
 
 
     // all the states of the enemies
@@ -37,6 +44,7 @@ public class EnemyStateManager : MonoBehaviour
 
     void Start()
     {
+
         idleState = new IdleStateEnemy(aggroDistance);
         aggroState = new AggroStateEnemy(deaggroDistance, attackDistance);
         attackState = new AttackStateEnemy(attackDistance);
@@ -54,6 +62,7 @@ public class EnemyStateManager : MonoBehaviour
         render = GetComponentInChildren<Renderer>();
         playerTransform = FindObjectOfType<Movmement2D>().transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
+        coneDetection = gameObject.GetComponent<ConeDetection2D>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
@@ -136,6 +145,10 @@ public class EnemyStateManager : MonoBehaviour
     {
         SwitchState(idleState);
     }
+    public void Attack()
+    {
+        SwitchState(attackState);
+    }
 
     // after a certain amount of time switch to idle, mimics the deaggro time where they are standing still
     public void SwitchToIdle()
@@ -163,6 +176,7 @@ public class EnemyStateManager : MonoBehaviour
         damagedState = new DamagedStateEnemy(rb, duration, knockbackForce); // Reinitialize with new parameters
     }
 
+    #region Gizmos and Drawings
     private void OnDrawGizmos()
     {
         Color holder = Gizmos.color;
@@ -174,6 +188,41 @@ public class EnemyStateManager : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackDistance);
         Gizmos.color = holder;
     }
+
+    private void OnRenderObject()
+    {
+        // Draw spheres in the Game view
+        DrawSphere(transform.position, aggroDistance, aggroColor);
+        DrawSphere(transform.position, deaggroDistance, deaggroColor);
+        DrawSphere(transform.position, attackDistance, attackColor);
+    }
+
+    private void DrawSphere(Vector3 position, float radius, Color color)
+    {
+        int segmentCount = 50;
+        float angleStep = 360f / segmentCount;
+
+        GL.PushMatrix();
+        GL.Begin(GL.LINES);
+        GL.Color(color);
+
+        // Generate points for the circle
+        for (int i = 0; i <= segmentCount; i++)
+        {
+            float angle1 = Mathf.Deg2Rad * (angleStep * i);
+            float angle2 = Mathf.Deg2Rad * (angleStep * (i + 1));
+
+            Vector3 point1 = position + new Vector3(Mathf.Cos(angle1), Mathf.Sin(angle1), 0) * radius;
+            Vector3 point2 = position + new Vector3(Mathf.Cos(angle2), Mathf.Sin(angle2), 0) * radius;
+
+            GL.Vertex(point1);
+            GL.Vertex(point2);
+        }
+
+        GL.End();
+        GL.PopMatrix();
+    }
+    #endregion
 
     public void LookAtPlayer()
     {
@@ -195,11 +244,13 @@ public class EnemyStateManager : MonoBehaviour
         if (attackRange.playerHit)
         {
             Debug.Log("player hit");
+            ui.ExitGame();
             return true;
         }
         else
         {
             Debug.Log("no player");
+            ui.ExitGame();
             return false;
         }
     }

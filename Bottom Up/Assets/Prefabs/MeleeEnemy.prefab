@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3224112116464064855}
   - component: {fileID: 6791957088008189159}
   - component: {fileID: 2795471244083569382}
+  - component: {fileID: 7612399450675002259}
   m_Layer: 0
   m_Name: MeleeEnemy
   m_TagString: ENEMY
@@ -169,6 +170,16 @@ MonoBehaviour:
   idleAtPlayerLastPositionDuration: 3
   deleteTimer: 0
   spawnpoint: {fileID: 7154760889215388822}
+  detectionRadius: 10
+  detectionAngle: 60
+  target: {fileID: 4963501504880522484, guid: 26f9098592b780e46a0fa5444bbb1dbc, type: 3}
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  coneColor: {r: 1, g: 1, b: 0, a: 0.3}
+  aggroColor: {r: 1, g: 0, b: 0, a: 1}
+  deaggroColor: {r: 0, g: 0, b: 1, a: 1}
+  attackColor: {r: 0, g: 0, b: 0, a: 1}
   turnSpeed: 0
   attackRange: {fileID: 6791957088008189159}
   render: {fileID: 0}
@@ -207,3 +218,24 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7612399450675002259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4333847815877743595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcac13cb6ed94742837b357908d1070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 10
+  detectionAngle: 60
+  target: {fileID: 4963501504880522484, guid: 26f9098592b780e46a0fa5444bbb1dbc, type: 3}
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  coneColor: {r: 1, g: 1, b: 0, a: 0.3}
+  moveSpeed: 3
+  rotationSpeed: 200

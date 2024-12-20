@@ -37,7 +37,14 @@ public class Movmement2D : MonoBehaviour
     [Header("Trackers")]
     public bool isCrouching;
     public bool isSprinting;
-    public 
+
+    [Header("Trackers")]
+    [SerializeField] private GameObject pole;
+    [SerializeField] private Vector3 growPole = new Vector3((float)0.5, (float)0.5, 1);
+    private Vector3 ogPoleSize = new Vector3((float)0.5, 1, 1);
+    private int maxGrow = 6;
+    private int minGrow = 0;
+    private int currentGrow = 0;
 
 
     void Start()
@@ -49,6 +56,10 @@ public class Movmement2D : MonoBehaviour
 
         sprintSlider.value = 1;
         breathSlider.value = 1;
+
+        rb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+        pole.transform.localScale = ogPoleSize;
+        currentGrow = 0;
     }
 
     void Update()
@@ -67,6 +78,25 @@ public class Movmement2D : MonoBehaviour
             IncreaseStamina();
         if(!isCrouching)
             IncreaseBreath();
+    }
+
+    private void OnGrowPole()
+    {
+        if (currentGrow < maxGrow)
+        {
+            Debug.Log("grow");
+            pole.transform.localScale += ogPoleSize;
+            currentGrow++;
+        }
+    }
+    private void OnShrinkPole()
+    {
+        if (currentGrow > minGrow)
+        {
+            Debug.Log("shrink");
+            pole.transform.localScale -= ogPoleSize;
+            currentGrow--;
+        }
     }
 
     #region Sprint/Crouch Bar

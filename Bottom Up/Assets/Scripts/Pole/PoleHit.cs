@@ -34,6 +34,8 @@ public class PoleHit : MonoBehaviour
 
                 // Apply knockback to the enemy
                 enemy.ApplyKnockback(knockbackDirection, knockbackForce, knockbackDuration);
+
+                Destroy(enemy.gameObject);
             }
         }
     }
